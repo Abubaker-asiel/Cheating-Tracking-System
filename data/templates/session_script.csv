@@ -1,0 +1,5 @@
+session,t_start,t_end,seat,act,behavior,notes
+example_session,60,70,3,takes out phone and reads,PHONE_USE,
+example_session,100,104,5,looks up at ceiling while thinking,,innocent look-alike
+example_session,140,146,2,turns head to seat 3,GAZE_NEIGHBOR,
+example_session,180,185,4,stretches arms,,innocent look-alike

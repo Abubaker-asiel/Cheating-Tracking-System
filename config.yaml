@@ -1,0 +1,21 @@
+# Every number the pipeline uses. Copy this file per experiment; the full config is also stored in the runs table.
+pose_weights: yolov8n-pose.pt
+detector_weights: yolov8n.pt
+tracker: bytetrack.yaml       # botsort.yaml is the other option
+imgsz: 960
+phone_imgsz: 1280
+person_conf: 0.40
+phone_conf: 0.25
+kp_conf: 0.35
+frame_stride: 2               # 2 = process every other frame
+
+# Thresholds below are starting guesses. Calibrate on the 'val' sessions, never on 'test'.
+phone_min_s: 1.5
+phone_release_s: 1.0
+phone_wrist_frac: 0.8
+yaw_threshold: 0.20
+gaze_min_s: 3.0
+gaze_release_s: 1.0
+neighbor_max_gap: 2.5
+hand_min_s: 1.0
+hand_release_s: 0.8

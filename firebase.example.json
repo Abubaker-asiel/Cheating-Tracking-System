@@ -1,0 +1,7 @@
+{
+  "credentials": "serviceAccountKey.json",
+  "storage_bucket": "your-project-id.firebasestorage.app",
+  "mode": "storage",
+  "collection": "incidents",
+  "prefix": "invigil"
+}

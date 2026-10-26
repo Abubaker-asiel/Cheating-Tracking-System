@@ -1,0 +1,3 @@
+session,behavior,t_start,t_end,notes
+example_session,PHONE_USE,62.0,71.5,phone under desk left hand
+example_session,GAZE_NEIGHBOR,140.0,146.0,

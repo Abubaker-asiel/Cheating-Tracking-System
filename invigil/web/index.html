@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invigil · review desk</title>
+<link rel="icon" href="/icon.png">
+<style>
+:root{
+  --paper:#F4F1EA; --card:#FBF9F4; --ink:#1B1F23; --muted:#6B6F73; --line:#E2DCCF; --hover:#F1ECE0;
+  --red:#D8432B; --green:#2F8F5B; --amber:#D9A441; --grey:#A9A596; --shadow:0 1px 2px rgba(27,31,35,.05),0 8px 24px rgba(27,31,35,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{--paper:#14171A; --card:#1B1F23; --ink:#EEEAE0; --muted:#9A9E9C; --line:#2C3136; --hover:#23282D; --shadow:none}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.serif{font-family:ui-serif,Georgia,"Times New Roman",serif}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{max-width:1280px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand img{width:34px;height:34px;border-radius:9px}
+.brand b{font-size:24px;letter-spacing:-.01em}
+.brand span{color:var(--muted);font-size:13px;margin-top:4px}
+.grow{flex:1}
+select,input[type=search]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;outline:none}
+select:focus,input:focus{border-color:var(--ink)}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 14px}
+.btn{text-decoration:none;display:inline-block}
+.btn:hover{background:var(--hover)}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}.btn.red:hover{filter:brightness(.92)}
+.btn.sm{padding:5px 10px;font-size:12.5px;border-radius:8px}
+.live{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12.5px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(47,143,91,.5);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(47,143,91,0)}100%{box-shadow:0 0 0 0 rgba(47,143,91,0)}}
+main{max-width:1280px;margin:0 auto;padding:26px 28px 60px}
+h1{font-size:30px;letter-spacing:-.02em;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 22px;max-width:70ch}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,1fr);margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.kpi{padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--c,var(--ink))}
+.kpi .l{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.kpi .v{font-size:38px;font-weight:700;letter-spacing:-.03em;margin:6px 0 2px}
+.kpi .n{color:var(--muted);font-size:12.5px}
+.charts{grid-template-columns:1fr 1.25fr 1.6fr;margin-bottom:16px}
+.panel{padding:18px 20px}
+.panel h3{margin:0 0 14px;font-size:14px}
+.panel h3 small{color:var(--muted);font-weight:400;margin-left:6px}
+.donut{display:flex;align-items:center;gap:20px}
+.legend{display:grid;gap:8px;font-size:13px;white-space:nowrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px}
+.legend b{margin-left:6px}
+.bars{display:grid;gap:13px}
+.bar-row .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.track{height:9px;background:var(--hover);border-radius:6px;overflow:hidden}
+.fill{height:100%;border-radius:6px;transition:width .5s}
+.empty{color:var(--muted);padding:26px 0;text-align:center}
+.tools{display:flex;gap:10px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.seg{display:flex;background:var(--hover);border-radius:11px;padding:3px}
+.seg button{font:inherit;border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:9px;cursor:pointer;font-weight:600}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button span{opacity:.55;margin-left:5px;font-weight:500}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;padding:11px 14px;font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--hover)}
+.thumb{width:92px;height:58px;object-fit:cover;border-radius:9px;background:var(--hover);display:block;border:1px solid var(--line)}
+.thumb.missing{visibility:hidden}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600}
+.sig{display:flex;align-items:center;gap:8px}.sig .track{width:64px;height:6px}
+.muted{color:var(--muted)}.small{font-size:12.5px}
+.act{display:flex;gap:6px}
+.btn.ok:hover{background:#DFF0E6;border-color:var(--green)}.btn.no:hover{background:#F8E4DE;border-color:var(--red)}
+#veil{position:fixed;inset:0;background:rgba(10,12,14,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+#veil.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(640px,100%);background:var(--paper);border-left:1px solid var(--line);transform:translateX(105%);transition:transform .25s;z-index:21;overflow:auto;padding:24px}
+#drawer.on{transform:none}
+#drawer img.big{width:100%;border-radius:14px;border:1px solid var(--line);background:#000;display:block;margin:14px 0}
+dl{display:grid;grid-template-columns:130px 1fr;gap:9px 14px;margin:16px 0}
+dt{color:var(--muted)}dd{margin:0;word-break:break-all}
+.row{display:flex;gap:10px;align-items:center}
+.note{background:var(--hover);border-radius:12px;padding:12px 14px;color:var(--muted);font-size:12.5px;margin-top:18px}
+@media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.bar{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand"><img src="/icon.png" alt=""><b class="serif">Invigil</b><span>review desk</span></div>
+  <div class="grow"></div>
+  <div class="live"><i class="dot"></i><span id="updated">connecting…</span></div>
+  <select id="session" aria-label="Session"><option value="">All sessions</option></select>
+  <a class="btn" id="export" href="#" download="incidents.csv">Export CSV</a>
+</div></header>
+
+<main>
+  <h1 class="serif">Incident review</h1>
+  <p class="sub">Every flag below is a lead for a human reviewer, not a verdict. Confirm what you can see in the evidence, dismiss what you can’t. Dismissals feed the false-alarm rate.</p>
+
+  <section class="grid kpis" id="kpis"></section>
+
+  <section class="grid charts">
+    <div class="card panel"><h3>Review status</h3><div class="donut" id="donut"></div></div>
+    <div class="card panel"><h3>Flags by behavior</h3><div class="bars" id="bars"></div></div>
+    <div class="card panel"><h3>Flags over exam time<small>per minute of video</small></h3><div id="timeline"></div></div>
+  </section>
+
+  <section class="card">
+    <div class="tools">
+      <div class="seg" id="seg"></div>
+      <select id="behavior" aria-label="Behavior"><option value="">All behaviors</option></select>
+      <input id="q" type="search" placeholder="Search student, session…">
+      <div class="grow"></div>
+      <span class="muted small" id="cloud"></span>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Evidence</th><th>Student</th><th>Behavior</th><th>Signal</th><th>Video time</th><th>Detected</th><th>Status</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="empty" id="none" hidden>No incidents match. Process a video in the desktop app and they’ll show up here.</div>
+  </section>
+</main>
+
+<div id="veil"></div>
+<aside id="drawer" aria-hidden="true"></aside>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = t => t == null ? "–" : String(Math.floor(t/60)).padStart(2,"0") + ":" + (t%60).toFixed(1).padStart(4,"0");
+const when = s => { if(!s) return "–"; const d = new Date(s); return isNaN(d) ? s : d.toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}) };
+const STATUS = {pending:["#8A5A00","#F6EBD3"], confirmed:["#B5301B","#F8E4DE"], dismissed:["#555B5F","#E9E5DA"]};
+const DONUT = {pending:"#D9A441", confirmed:"#D8432B", dismissed:"#A9A596"};
+const state = {status:"", behavior:"", session:"", q:""};
+let rowsCache = [], filled = false, openId = null;
+
+async function api(path, opts){ const r = await fetch(path, opts); if(!r.ok) throw new Error(r.status); return r.json(); }
+const chip = (txt, [fg,bg]) => `<span class="chip" style="color:${esc(fg)};background:${esc(bg)}">${esc(txt)}</span>`;
+const pct = v => v == null ? "–" : Math.round(v*100) + "%";
+
+function kpis(s){
+  const k = s.kpis;
+  const cards = [
+    ["Flagged", k.total, k.per_hour != null ? k.per_hour.toFixed(1) + " per hour of video" : "no video processed yet", "var(--ink)"],
+    ["Needs review", k.pending, "waiting for a human", "#D9A441"],
+    ["Confirmed", k.confirmed, "reviewer agreed with the flag", "var(--red)"],
+    ["False-alarm rate", pct(k.false_alarm_rate), k.dismissed + " dismissed of " + (k.confirmed + k.dismissed) + " reviewed", "var(--green)"],
+  ];
+  $("#kpis").innerHTML = cards.map(([l,v,n,c]) => `<div class="card kpi" style="--c:${c}"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div><div class="n">${esc(n)}</div></div>`).join("");
+}
+
+function donut(s){
+  const k = s.kpis, parts = [["pending","Needs review",k.pending],["confirmed","Confirmed",k.confirmed],["dismissed","False alarm",k.dismissed]];
+  const total = k.total, R = 52, C = 2*Math.PI*R;
+  let off = 0, arcs = "";
+  if(total){ for(const [key,,n] of parts){ if(!n) continue; const len = C*n/total;
+    arcs += `<circle r="${R}" cx="70" cy="70" fill="none" stroke="${DONUT[key]}" stroke-width="16" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`; off += len; } }
+  $("#donut").innerHTML = `<svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label="Review status">
+    <circle r="${R}" cx="70" cy="70" fill="none" stroke="var(--hover)" stroke-width="16"/>${arcs}
+    <text x="70" y="68" text-anchor="middle" font-size="28" font-weight="700" fill="var(--ink)">${total}</text>
+    <text x="70" y="88" text-anchor="middle" font-size="11" fill="var(--muted)">flags</text></svg>
+    <div class="legend">${parts.map(([key,l,n]) => `<div><i style="background:${DONUT[key]}"></i>${esc(l)}<b>${n}</b></div>`).join("")}</div>`;
+}
+
+function bars(s){
+  const max = Math.max(1, ...s.by_behavior.map(b => b.count));
+  $("#bars").innerHTML = s.kpis.total ? s.by_behavior.map(b => `<div class="bar-row"><div class="top"><span>${esc(b.label)}</span><b>${b.count}</b></div>
+    <div class="track"><div class="fill" style="width:${100*b.count/max}%;background:${esc(b.color)}"></div></div></div>`).join("") : `<div class="empty">Nothing flagged yet.</div>`;
+}
+
+function timeline(s){
+  const t = s.timeline;
+  if(!t.length){ $("#timeline").innerHTML = `<div class="empty">Nothing flagged yet.</div>`; return; }
+  const W = 560, H = 150, pad = 22, max = Math.max(1, ...t.map(x => x.count)), bw = Math.min(26, (W - pad)/t.length - 3);
+  const step = (W - pad)/t.length;
+  const cols = t.map((x,i) => { const h = Math.round((H-pad-6) * x.count/max);
+    return `<rect x="${pad + i*step}" y="${H-pad-h}" width="${bw}" height="${Math.max(h, x.count?3:0)}" rx="3" fill="var(--red)"><title>minute ${x.minute}: ${x.count}</title></rect>`; }).join("");
+  const labels = [0, Math.floor((t.length-1)/2), t.length-1].filter((v,i,a) => a.indexOf(v) === i)
+    .map(i => `<text x="${pad + i*step}" y="${H-5}" font-size="11" fill="var(--muted)">${i}′</text>`).join("");
+  $("#timeline").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Flags per minute">
+    <line x1="${pad}" x2="${W}" y1="${H-pad}" y2="${H-pad}" stroke="var(--line)"/>
+    <text x="0" y="12" font-size="11" fill="var(--muted)">${max}</text>${cols}${labels}</svg>`;
+}
+
+function fillSelects(s){
+  if(filled) return; filled = true;
+  $("#session").innerHTML += s.sessions.map(x => `<option>${esc(x)}</option>`).join("");
+  $("#behavior").innerHTML += s.behaviors.map(b => `<option value="${esc(b.key)}">${esc(b.label)}</option>`).join("");
+}
+
+function seg(s){
+  const k = s.kpis, items = [["","All",k.total],["pending","Needs review",k.pending],["confirmed","Confirmed",k.confirmed],["dismissed","False alarms",k.dismissed]];
+  $("#seg").innerHTML = items.map(([v,l,n]) => `<button class="${state.status===v?"on":""}" data-v="${v}">${l}<span>${n}</span></button>`).join("");
+}
+
+function table(rows){
+  rowsCache = rows;
+  $("#none").hidden = rows.length > 0;
+  $("#rows").innerHTML = rows.map(e => `<tr data-id="${e.id}">
+    <td><img class="thumb ${e.has_best||e.has_onset?"":"missing"}" loading="lazy" src="/shot/${e.id}/best" alt="" onerror="this.classList.add('missing')"></td>
+    <td><b>Student #${esc(e.student)}</b></td>
+    <td>${chip(e.behavior_label, [e.color, e.soft])}</td>
+    <td><div class="sig"><div class="track"><div class="fill" style="width:${Math.round((e.signal||0)*100)}%;background:${esc(e.color)}"></div></div><span class="small">${(e.signal||0).toFixed(2)}</span></div></td>
+    <td>${fmt(e.t_start)}<div class="muted small">${esc(e.session)}</div></td>
+    <td class="muted small">${esc(when(e.created_at))}</td>
+    <td>${chip(e.status_label, STATUS[e.status] || STATUS.pending)}</td>
+    <td><div class="act"><button class="btn sm ok" data-act="confirmed" title="Confirm">Confirm</button><button class="btn sm no" data-act="dismissed" title="False alarm">Dismiss</button></div></td></tr>`).join("");
+  if(openId) { const e = rows.find(r => r.id === openId); if(e) drawerStatus(e); }
+}
+
+function cloud(s){
+  const c = s.cloud || {}, n = k => c[k] || 0;
+  $("#cloud").textContent = (n("synced") || n("pending") || n("error")) ?
+    `☁ ${n("synced")} synced · ${n("pending")} waiting${n("error") ? " · " + n("error") + " failed" : ""}` : "";
+}
+
+async function load(){
+  try{
+    const qs = new URLSearchParams(Object.entries(state).filter(([,v]) => v));
+    const [s, rows] = await Promise.all([api("/api/summary?session=" + encodeURIComponent(state.session)), api("/api/incidents?" + qs)]);
+    fillSelects(s); kpis(s); donut(s); bars(s); timeline(s); seg(s); table(rows); cloud(s);
+    $("#updated").textContent = "Updated " + new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"});
+    $("#export").href = "/api/export.csv?" + qs;
+  }catch(err){ $("#updated").textContent = "Server not reachable"; }
+}
+
+async function review(id, status){
+  await api("/api/review", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({event_id:id, status})});
+  await load();
+}
+
+/* drawer */
+function openDrawer(id, shot = "best"){
+  const e = rowsCache.find(r => r.id === id); if(!e) return;
+  openId = id;
+  const d = $("#drawer");
+  d.innerHTML = `<div class="row"><div><div class="muted small">Incident #${e.id}</div><h1 class="serif" style="font-size:26px;margin:0">${esc(e.behavior_label)}</h1></div><div class="grow"></div><button class="btn sm" id="x">Close</button></div>
+    <div class="seg" style="display:inline-flex;margin-top:14px"><button class="${shot==="best"?"on":""}" data-shot="best">Peak frame</button><button class="${shot==="onset"?"on":""}" data-shot="onset">Onset</button></div>
+    <img class="big" src="/shot/${e.id}/${shot}" alt="Evidence frame" onerror="this.alt='No screenshot saved'">
+    <dl><dt>Student</dt><dd>#${esc(e.student)} (tracker ID, not a seat)</dd>
+    <dt>Session</dt><dd>${esc(e.session)} · ${esc(e.tag)}</dd>
+    <dt>Video time</dt><dd>${fmt(e.t_start)} → ${fmt(e.t_end)}</dd>
+    <dt>Signal strength</dt><dd>${(e.signal||0).toFixed(2)}</dd>
+    <dt>Detected</dt><dd>${esc(when(e.created_at))}</dd>
+    <dt>Cloud</dt><dd>${({synced:"Saved to Firebase",pending:"Waiting to upload",error:"Upload failed, will retry",local:"Local only"})[e.cloud]}</dd>
+    <dt>Status</dt><dd id="dstatus"></dd></dl>
+    <div class="row"><button class="btn red" data-act="confirmed">Confirm incident</button><button class="btn" data-act="dismissed">Dismiss as false alarm</button></div>
+    <div class="note">Signal strength is a heuristic score, not a probability. Check the frame yourself: look for the behavior, not the number. Shortcuts: C confirm, D dismiss, Esc close.</div>`;
+  drawerStatus(e);
+  d.classList.add("on"); $("#veil").classList.add("on"); d.setAttribute("aria-hidden","false");
+}
+function drawerStatus(e){ const n = $("#dstatus"); if(n) n.innerHTML = chip(e.status_label, STATUS[e.status] || STATUS.pending); }
+function closeDrawer(){ openId = null; $("#drawer").classList.remove("on"); $("#veil").classList.remove("on"); $("#drawer").setAttribute("aria-hidden","true"); }
+
+document.addEventListener("click", ev => {
+  const t = ev.target;
+  const seg = t.closest("#seg button"); if(seg){ state.status = seg.dataset.v; load(); return; }
+  const shot = t.closest("[data-shot]"); if(shot){ openDrawer(openId, shot.dataset.shot); return; }
+  const act = t.closest("[data-act]");
+  if(act){ const id = openId || +act.closest("tr")?.dataset.id; if(id) review(id, act.dataset.act); ev.stopPropagation(); return; }
+  if(t.id === "x" || t.id === "veil") return closeDrawer();
+  const tr = t.closest("#rows tr"); if(tr) openDrawer(+tr.dataset.id);
+});
+document.addEventListener("keydown", ev => {
+  if(ev.target.matches("input,select")) return;
+  if(ev.key === "Escape") closeDrawer();
+  if(openId && ev.key.toLowerCase() === "c") review(openId, "confirmed");
+  if(openId && ev.key.toLowerCase() === "d") review(openId, "dismissed");
+});
+$("#session").onchange = e => { state.session = e.target.value; load(); };
+$("#behavior").onchange = e => { state.behavior = e.target.value; load(); };
+let timer; $("#q").oninput = e => { clearTimeout(timer); timer = setTimeout(() => { state.q = e.target.value; load(); }, 200); };
+load(); setInterval(load, 5000);
+</script>
+</body>
+</html>

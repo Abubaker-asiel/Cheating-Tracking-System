@@ -1,0 +1,14 @@
+# secrets and evidence must never be committed
+serviceAccountKey*.json
+*-firebase-adminsdk-*.json
+firebase.json
+*.db
+*.db-wal
+*.db-shm
+runs/
+reports/
+__pycache__/
+.venv/
+.pytest_cache/
+dist/
+build/

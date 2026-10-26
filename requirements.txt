@@ -1,0 +1,10 @@
+ultralytics>=8.3
+lapx>=0.5                 # ByteTrack / BoT-SORT need a linear-assignment solver
+opencv-python>=4.8
+numpy>=1.24
+pyyaml>=6
+PySide6-Essentials>=6.6   # desktop app (Qt)
+firebase-admin>=6         # optional: only used when firebase.json exists
+pillow>=10                # only for scripts/make_icon.py
+# dev
+pytest>=8
